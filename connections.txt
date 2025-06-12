@@ -1,0 +1,43 @@
+
+Water sensor 
+
+analogue into GPIO34
+power to 3v
+gnd to gnd
+
+esp32 to ardino 
+
+esp32 TX2 to ardino rx0
+Common GND
+
+
+
+Power and Ground:
+LCD Pin 1 (GND) to Arduino GND.
+LCD Pin 2 (VCC) to Arduino 5V.
+LCD Pin 16 (BLK) to Arduino GND.
+LCD Pin 5 (RW) to Arduino GND (forces write mode).
+Contrast (V0):
+LCD Pin 3 (V0) to Arduino GND. with 3.9kΩ resistor
+
+Control Pins:
+LCD Pin 4 (RS) to Arduino Digital 8 (PB0).
+LCD Pin 6 (EN) to Arduino Digital 9 (PB1).
+Data Pins:
+LCD Pin 11 (D4) to Arduino Digital 4 (PD4).
+LCD Pin 12 (D5) to Arduino Digital 5 (PD5).
+LCD Pin 13 (D6) to Arduino Digital 6 (PD6).
+LCD Pin 14 (D7) to Arduino Digital 7 (PD7).
+Backlight:
+LCD Pin 15 (BLA) to Arduino Digital 13 (PB5).
+The code controls the backlight via LCD_backlight_ON/OFF on PB5.
+LCD Pin 16 (BLK) to Arduino GND (already connected).
+
+
+| Servo Wire Color | Function     | Connect To Arduino UNO  |
+| ---------------- | ------------ | ----------------------- |
+| **Red**          | VCC (Power)  | **5V pin**              |
+| **Brown**        | GND (Ground) | **GND pin**             |
+| **Orange**       | Signal (PWM) | **Digital Pin 10      ** |
+
+

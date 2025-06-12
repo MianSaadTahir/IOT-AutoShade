@@ -1,0 +1,131 @@
+#include <WiFi.h>
+#include <PubSubClient.h>
+
+// Wi-Fi Credentials
+const char* ssid = "infinix";
+const char* password = "malik000";
+
+// MQTT Broker
+const char* mqtt_server = "broker.hivemq.com";
+const char* topic_sensor = "iot/waterSensor";
+const char* topic_status = "iot/rainStatus";
+
+// Globals
+WiFiClient espClient;
+PubSubClient client(espClient);
+unsigned long lastMsg = 0;
+bool statusReceived = false;
+String receivedStatus = "";
+
+// Water Sensor
+const int sensorPin = 34;
+const int threshold = 200;
+
+// UART to Arduino
+#define ARDUINO_TX 17
+#define uartBaud 9600
+
+void setup_wifi() {
+  delay(100);
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+  int attempts = 0;
+  while (WiFi.status() != WL_CONNECTED && attempts < 20) {
+    delay(500);
+    Serial.print(".");
+    attempts++;
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("\nWiFi connected");
+  } else {
+    Serial.println("\nWiFi connection failed, will fallback to sensor-only mode.");
+  }
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  String message = "";
+  for (int i = 0; i < length; i++) {
+    message += (char)payload[i];
+  }
+
+  Serial.print("Received from MQTT: ");
+  Serial.println(message);
+
+  if (message == "0" || message == "1") {
+    receivedStatus = message;
+    statusReceived = true;
+  }
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    if (client.connect("ESP32Client")) {
+      Serial.println("connected");
+      client.subscribe(topic_status);
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      delay(2000);
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  Serial2.begin(uartBaud, SERIAL_8N1, -1, ARDUINO_TX);
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
+}
+
+void loop() {
+  if (WiFi.status() == WL_CONNECTED) {
+    if (!client.connected()) {
+      reconnect();
+    }
+    client.loop();
+  }
+
+  int sensorValue = analogRead(sensorPin);
+  Serial.print("Sensor Value: ");
+  Serial.println(sensorValue);
+
+  statusReceived = false;
+  receivedStatus = "";
+
+  // Publish to server
+  if (WiFi.status() == WL_CONNECTED && client.connected()) {
+    client.publish(topic_sensor, String(sensorValue).c_str());
+    Serial.println("Sensor value published to server");
+  } else {
+    Serial.println("WiFi or MQTT not connected, skipping publish");
+  }
+
+  // Wait up to 3 seconds for response
+  unsigned long startWait = millis();
+  while (!statusReceived && millis() - startWait < 3000) {
+    if (client.connected()) {
+      client.loop();
+    }
+  }
+
+  String toSend;
+
+  if (statusReceived) {
+    toSend = receivedStatus;
+    Serial.print("Using server status: ");
+  } else {
+    toSend = (sensorValue > threshold) ? "1" : "0";
+    Serial.print("Using local sensor fallback: ");
+  }
+
+  Serial.println(toSend);
+  Serial2.println(toSend);
+
+  delay(5000); // wait before next cycle
+}

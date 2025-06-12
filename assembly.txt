@@ -1,0 +1,91 @@
+.include "m328pdef.inc"
+.include "delay_Macro.inc"
+.include "1602_LCD_Macros.inc"
+.include "16bit_reg_read_write_Macro.inc"
+
+.cseg
+.org 0x0000
+
+rjmp INIT
+
+; === Initialization Section ===
+INIT:
+    ; Initialize LCD
+    LCD_init
+    LCD_backlight_ON
+
+    ; Setup UART
+    LDI R16, 103          ; 9600 baud @ 16MHz => UBRR0 = 103
+    STS UBRR0L, R16
+    LDI R16, 0
+    STS UBRR0H, R16
+
+    LDI R16, (1<<RXEN0)   ; Enable UART receiver
+    STS UCSR0B, R16
+
+    ; Setup Servo on PB2 (OC1B / Digital Pin 10)
+    SBI DDRB, PB2
+    LDI R16, 0b00100010   ; COM1B1=1, WGM11=1 for PWM
+    STS TCCR1A, R16
+    LDI R16, 0b00011010   ; WGM13:WGM12=1,1 and prescaler 8
+    STS TCCR1B, R16
+
+    ; TOP = ICR1 = 40000 → 20ms PWM
+    LDI R16, LOW(40000)
+    LDI R17, HIGH(40000)
+    STSw ICR1H, R17, R16
+
+MAIN_LOOP:
+    ; === Wait for UART data ===
+WAIT_RX:
+    LDS R16, UCSR0A
+    SBRS R16, RXC0
+    RJMP WAIT_RX
+
+    ; === Read received value ===
+    LDS R16, UDR0
+
+    CPI R16, '1'
+    BREQ HANDLE_RAIN
+
+    ; === Assume it's '0' or fallback ===
+HANDLE_CLEAR:
+    RCALL MOVE_SERVO_90
+    RCALL SHOW_CLEAR
+    RJMP MAIN_LOOP
+
+HANDLE_RAIN:
+    RCALL MOVE_SERVO_90
+    RCALL SHOW_RAIN
+    RJMP MAIN_LOOP
+
+; === Display "Clear" ===
+SHOW_CLEAR:
+    LCD_send_a_command 0x01 ; Clear
+    delay 100
+    LDI ZL, LOW(2 * clear_str)
+    LDI ZH, HIGH(2 * clear_str)
+    LDI R20, 5
+    LCD_send_a_string
+    RET
+
+; === Display "Rain" ===
+SHOW_RAIN:
+    LCD_send_a_command 0x01 ; Clear
+    delay 100
+    LDI ZL, LOW(2 * rain_str)
+    LDI ZH, HIGH(2 * rain_str)
+    LDI R20, 4
+    LCD_send_a_string
+    RET
+
+; === Move Servo to 90° (OCR1B = 2900) ===
+MOVE_SERVO_90:
+    LDI R16, LOW(2900)
+    LDI R17, HIGH(2900)
+    STSw OCR1BH, R17, R16
+    RET
+
+; === Strings ===
+clear_str: .db "Clear", 0
+rain_str:  .db "Rain", 0
