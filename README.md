@@ -7,9 +7,9 @@ An IoT-based rain detection system that uses an ESP32, water sensor, MQTT commun
 - [Workflow](#workflow)
 - [Circuit Diagram](#circuit-diagram)
 - [Pictures](#pictures)
-- [Usage](#usage)
 - [Documentation](#documentation)
 - [Technologies Used](#technologies-used)
+- [Usage](#usage)
 - [Contributing](#contributing)
 
 ## Features
@@ -43,6 +43,19 @@ An IoT-based rain detection system that uses an ESP32, water sensor, MQTT commun
 <img src="assets/3.jpg" alt="Screenshot" width="50%">
 <img src="assets/4.jpg" alt="Screenshot" width="50%">
 
+## Documentation
+For a detailed overview of the project, refer to the [Documentation](./documentation) in the repository.
+
+## Technologies Used
+- ESP32 DevKit V1
+- Arduino Uno
+- Python (for MQTT server logic)
+- MQTT (broker.hivemq.com)
+- Water Sensor (analog)
+- SG90 Servo Motor
+- 16x2 LCD Display
+- UART Serial Communication
+
 ## Usage
 ### ESP32 Firmware
 1. Open `esp32_rain_mqtt_uart.ino` in Arduino IDE.
@@ -67,19 +80,6 @@ An IoT-based rain detection system that uses an ESP32, water sensor, MQTT commun
 - ESP32 TX2 (GPIO17) → Arduino RX0
 - Water Sensor Analog Output → ESP32 GPIO34
 - Ensure **common GND** between ESP32 and Arduino
-
-## Documentation
-For a detailed overview of the project, refer to the [Documentation](./documentation) in the repository.
-
-## Technologies Used
-- ESP32 DevKit V1
-- Arduino Uno
-- Python (for MQTT server logic)
-- MQTT (broker.hivemq.com)
-- Water Sensor (analog)
-- SG90 Servo Motor
-- 16x2 LCD Display
-- UART Serial Communication
 
 ## Contributing
 Contributions, issues, and feature requests are welcome!  
