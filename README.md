@@ -13,12 +13,12 @@ An IoT-based rain detection system that uses an ESP32, water sensor, MQTT commun
 - [Contributing](#contributing)
 
 ## Features
-- **Rain Detection**: Reads analog input from a water sensor to determine rain levels.
-- **MQTT Communication**: Publishes sensor data and subscribes to rain status from an MQTT broker.
-- **Fallback Logic**: Uses local decision-making when Wi-Fi or server is unavailable.
-- **UART Communication**: Transfers status from ESP32 to Arduino Uno.
-- **LCD Display**: Displays real-time weather status (`Rain Detected` / `Clear Weather`).
-- **Automatic Shade Control**: Controls a servo motor to open or close a shade based on weather.
+- Reads analog input from a water sensor to determine rain levels.
+- Publishes sensor data and subscribes to rain status from an MQTT broker.
+- Uses fallback logic for decision-making when Wi-Fi or server is unavailable.
+- Transfers status from ESP32 to Arduino Uno.
+- Displays real-time weather status (`Rain Detected` / `Clear Weather`).
+- Controls a servo motor to open or close a shade based on weather.
 
 ## Workflow
 1. ESP32 reads water level using GPIO34.
@@ -34,14 +34,14 @@ An IoT-based rain detection system that uses an ESP32, water sensor, MQTT commun
    - **70° (Open)** if clear
 
 ## Circuit Diagrams
-<img src="assets/dfd.png" alt="Screenshot" width="50%">
-<img src="assets/flowchart.png" alt="Screenshot" width="50%">
+<img src="assets/dfd.png" alt="Screenshot">
+<img src="assets/flowchart.png" alt="Screenshot">
 
 ## Pictures
-<img src="assets/1.jpg" alt="Screenshot" width="50%">
-<img src="assets/2.jpg" alt="Screenshot" width="50%">
-<img src="assets/3.jpg" alt="Screenshot" width="50%">
-<img src="assets/4.jpg" alt="Screenshot" width="50%">
+<img src="assets/1.jpg" alt="Screenshot">
+<img src="assets/2.jpg" alt="Screenshot">
+<img src="assets/3.jpg" alt="Screenshot">
+<img src="assets/4.jpg" alt="Screenshot">
 
 ## Usage
 ### ESP32 Firmware
