@@ -34,14 +34,14 @@ An IoT-based rain detection system that uses an ESP32, water sensor, MQTT commun
    - **70° (Open)** if clear
 
 ## Circuit Diagrams
-<img src="assets/dfd.png" alt="Screenshot">
-<img src="assets/flowchart.png" alt="Screenshot">
+<img src="assets/dfd.png" alt="Screenshot" width="75%">
+<img src="assets/flowchart.png" alt="Screenshot" width="75%">
 
 ## Pictures
-<img src="assets/1.jpg" alt="Screenshot" width="75%">
-<img src="assets/2.jpg" alt="Screenshot" width="75%">
-<img src="assets/3.jpg" alt="Screenshot" width="75%">
-<img src="assets/4.jpg" alt="Screenshot" width="75%">
+<img src="assets/1.jpg" alt="Screenshot" width="50%">
+<img src="assets/2.jpg" alt="Screenshot" width="50%">
+<img src="assets/3.jpg" alt="Screenshot" width="50%">
+<img src="assets/4.jpg" alt="Screenshot" width="50%">
 
 ## Usage
 ### ESP32 Firmware
