@@ -11,7 +11,7 @@ An IoT-based rain detection system that uses an ESP32, water sensor, MQTT commun
 - [Technologies Used](#technologies-used)
 - [Usage](#usage)
 - [Contributing](#contributing)
-
+- [License](#license)
 ## Features
 - Reads analog input from a water sensor to determine rain levels
 - Publishes sensor data and subscribes to rain status from an MQTT broker
@@ -84,3 +84,6 @@ For a detailed overview of the project, refer to the [Documentation](./documenta
 ## Contributing
 Contributions, issues, and feature requests are welcome!  
 Feel free to check out the [issues page](https://github.com/miansaadtahir/IOT-AutoShade/issues) for more information.
+## License
+
+This project is open source and available under the MIT [License](https://github.com/MianSaadTahir/IOT-AutoShade/blob/main/LICENSE).
